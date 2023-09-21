@@ -20,6 +20,11 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
+
+//#include "software_timer.c"
+#include "software_timer.h"//ADD
+
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -47,6 +52,7 @@
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -60,6 +66,33 @@ void SystemClock_Config(void);
   * @brief  The application entry point.
   * @retval int
   */
+
+
+int timer1_counter = 0;
+int timer1_flag = 0;
+
+void setTimer1(int duration)
+{
+	timer1_counter = duration;
+	timer1_flag = 0;
+}
+
+void timerRun()
+{
+	if(timer1_counter > 0)
+	{
+		timer1_counter--;
+		if(timer1_counter <= 0)
+		{
+			timer1_flag = 1;
+		}
+	}
+}//ADD
+
+
+GPIO_TypeDef* seg_port[] = {l12_GPIO_Port, l1_GPIO_Port, l2_GPIO_Port, l3_GPIO_Port, l4_GPIO_Port, l5_GPIO_Port, l6_GPIO_Port, l7_GPIO_Port, l8_GPIO_Port, l9_GPIO_Port, l10_GPIO_Port, l11_GPIO_Port};
+int seg_pin[] = {l12_Pin, l1_Pin, l2_Pin, l3_Pin, l4_Pin, l5_Pin, l6_Pin, l7_Pin, l8_Pin, l9_Pin, l10_Pin, l11_Pin};
+
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -83,14 +116,39 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
+  MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+  setTimer1(100);
+  int counter = 11;
   while (1)
   {
+
+	  if(timer1_flag == 1)
+	  {
+		  setTimer1(100);
+		  HAL_GPIO_WritePin(seg_port[11 - counter], seg_pin[11 - counter], RESET);
+		  counter--;
+	  }
+	  if(counter < 0)
+	  {
+		  counter = 11;
+		  setTimer1(100);
+		  HAL_GPIO_WritePin(seg_port[11 - counter], seg_pin[11 - counter], SET);
+	  }
+	  else
+	  {
+		  HAL_GPIO_WritePin(seg_port[11 - counter], seg_pin[11 - counter], SET);
+	  }
+
+	  timerRun();
+	  HAL_Delay(10);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -131,6 +189,36 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPIO_Init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+  /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, l1_Pin|l2_Pin|l3_Pin|l4_Pin
+                          |l5_Pin|l6_Pin|l7_Pin|l8_Pin
+                          |l9_Pin|l10_Pin|l11_Pin|l12_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : l1_Pin l2_Pin l3_Pin l4_Pin
+                           l5_Pin l6_Pin l7_Pin l8_Pin
+                           l9_Pin l10_Pin l11_Pin l12_Pin */
+  GPIO_InitStruct.Pin = l1_Pin|l2_Pin|l3_Pin|l4_Pin
+                          |l5_Pin|l6_Pin|l7_Pin|l8_Pin
+                          |l9_Pin|l10_Pin|l11_Pin|l12_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
 }
 
 /* USER CODE BEGIN 4 */
