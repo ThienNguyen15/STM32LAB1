@@ -143,7 +143,6 @@ int main(void)
   	  else
   	  {
   		  display7SEG(timer1_counter / 100 + 1);
-
   	  }
 
 //	  if(timer1_counter % 100 == 0)
