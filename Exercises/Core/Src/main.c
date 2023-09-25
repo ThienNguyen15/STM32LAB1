@@ -179,16 +179,17 @@ int main(void)
 	  {
 		  second = 0;
 		  minute++;
-		  if(minute >= 60)
-		  {
-			  minute = 0;
-			  hour++;
-			  if(hour >= 12)
-			  {
-				  hour = 0;
-			  }
-		  }
 	  }
+	  if(minute >= 60)
+	  {
+		  minute = 0;
+		  hour++;
+	  }
+	  if(hour >= 12)
+	  {
+		  hour = 0;
+	  }
+
 	  HAL_Delay(1000);
 
     /* USER CODE END WHILE */

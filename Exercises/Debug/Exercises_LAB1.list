@@ -330,7 +330,7 @@ int main(void)
 	  if(second >= 60)
  80002d8:	687b      	ldr	r3, [r7, #4]
  80002da:	2b3b      	cmp	r3, #59	; 0x3b
- 80002dc:	dd11      	ble.n	8000302 <main+0x62>
+ 80002dc:	dd04      	ble.n	80002e8 <main+0x48>
 	  {
 		  second = 0;
  80002de:	2300      	movs	r3, #0
@@ -339,29 +339,30 @@ int main(void)
  80002e2:	68bb      	ldr	r3, [r7, #8]
  80002e4:	3301      	adds	r3, #1
  80002e6:	60bb      	str	r3, [r7, #8]
-		  if(minute >= 60)
+	  }
+	  if(minute >= 60)
  80002e8:	68bb      	ldr	r3, [r7, #8]
  80002ea:	2b3b      	cmp	r3, #59	; 0x3b
- 80002ec:	dd09      	ble.n	8000302 <main+0x62>
-		  {
-			  minute = 0;
+ 80002ec:	dd04      	ble.n	80002f8 <main+0x58>
+	  {
+		  minute = 0;
  80002ee:	2300      	movs	r3, #0
  80002f0:	60bb      	str	r3, [r7, #8]
-			  hour++;
+		  hour++;
  80002f2:	68fb      	ldr	r3, [r7, #12]
  80002f4:	3301      	adds	r3, #1
  80002f6:	60fb      	str	r3, [r7, #12]
-			  if(hour >= 12)
+	  }
+	  if(hour >= 12)
  80002f8:	68fb      	ldr	r3, [r7, #12]
  80002fa:	2b0b      	cmp	r3, #11
  80002fc:	dd01      	ble.n	8000302 <main+0x62>
-			  {
-				  hour = 0;
+	  {
+		  hour = 0;
  80002fe:	2300      	movs	r3, #0
  8000300:	60fb      	str	r3, [r7, #12]
-			  }
-		  }
 	  }
+
 	  HAL_Delay(1000);
  8000302:	f44f 707a 	mov.w	r0, #1000	; 0x3e8
  8000306:	f000 f95f 	bl	80005c8 <HAL_Delay>
