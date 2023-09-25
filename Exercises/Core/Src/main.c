@@ -133,17 +133,26 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 
   setTimer1(500);
-  int counter_led = 9;
+//  int counter_led = 9;
   while (1)
   {
+  	  if(timer1_counter % 100 == 0 && timer1_counter > 0)
+  	  {
+  		  display7SEG(timer1_counter / 100);
+  	  }
+  	  else
+  	  {
+  		  display7SEG(timer1_counter / 100 + 1);
 
-	  if(timer1_counter % 100 == 0)
-	  {
-		  display7SEG(counter_led);
-		  counter_led--;
-		  if(counter_led < 0)
-			  counter_led = 9;
-	  }
+  	  }
+
+//	  if(timer1_counter % 100 == 0)
+//	  {
+//		  display7SEG(counter_led);
+//		  counter_led--;
+//		  if(counter_led < 0)
+//			  counter_led = 9;
+//	  }
 
 	  if(timer1_flag == 1)
 	  {
