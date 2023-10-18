@@ -1,1 +1,1 @@
-# MICROPROCESSORS-MICROCONTROLLERS_STM32LAB1
+# Microprocessors & Microcontrollers_STM32LAB1
